@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,7 +24,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Roboto_400Regular,
+    Roboto_700Bold,
     ...FontAwesome.font,
   });
 
@@ -51,8 +53,7 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );
