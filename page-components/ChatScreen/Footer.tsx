@@ -10,9 +10,15 @@ type FooterProps = {
   handleSendMessage: (message: string) => void;
   chatId: string;
   chatName: string;
+  otherUsers: string[];
 };
 
-const Footer = ({ handleSendMessage, chatId, chatName }: FooterProps) => {
+const Footer = ({
+  handleSendMessage,
+  chatId,
+  chatName,
+  otherUsers,
+}: FooterProps) => {
   const [text, setText] = useState("");
   const router = useRouter();
 
@@ -67,7 +73,7 @@ const Footer = ({ handleSendMessage, chatId, chatName }: FooterProps) => {
         <Button
           onPress={() =>
             router.push({
-              pathname: "/create-chat",
+              pathname: "/chat-modal",
               params: {
                 chatId: chatId,
                 chatName: chatName,
@@ -82,7 +88,7 @@ const Footer = ({ handleSendMessage, chatId, chatName }: FooterProps) => {
           onPress={onSendMessage}
           label={<Icon name="send" size={18} color="white" />}
           variant="round"
-          disabled={!text}
+          disabled={otherUsers.length === 1 || !text}
         />
       </Row>
     </Row>

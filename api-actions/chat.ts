@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   documentId,
   getDoc,
@@ -152,6 +153,60 @@ export const usePinChat = () => {
           ? payload.pinned.filter((uid) => uid !== payload.uid)
           : [...payload.pinned, payload.uid],
       });
+    },
+  });
+};
+
+export const useDeleteChat = () => {
+  return useMutation({
+    mutationFn: async (payload: {
+      chatId: string;
+      uid: string;
+      members: string[];
+      users: User[];
+    }) => {
+      const docRef = doc(db, "chat", payload.chatId);
+      if (payload.members.length > 1) {
+        const filteredMembers = payload.members.filter(
+          (member) => member !== payload.uid
+        );
+
+        const systemMessage = `${
+          payload.users.find((user) => user.uid === payload.uid)?.name
+        } deleted the chat. Please also delete this chat.`;
+
+        await updateDoc(docRef, {
+          members: filteredMembers,
+          lastMessage: systemMessage,
+          lastSender: "System",
+        });
+
+        return await addDoc(
+          collection(db, "chat", payload.chatId, "messages"),
+          {
+            uid: "system",
+            message: systemMessage,
+            createdAt: moment().toString(),
+          }
+        );
+      } else {
+        return await deleteDoc(docRef);
+      }
+    },
+  });
+};
+
+export const useDeleteMessage = () => {
+  return useMutation({
+    mutationFn: async (payload: { chatId: string; messageId: string }) => {
+      const docRef = doc(
+        db,
+        "chat",
+        payload.chatId,
+        "messages",
+        payload.messageId
+      );
+      return await deleteDoc(docRef);
     },
   });
 };

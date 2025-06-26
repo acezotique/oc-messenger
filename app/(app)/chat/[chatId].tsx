@@ -104,6 +104,7 @@ const ChatScreen = () => {
           handleSendMessage={(message) => handleSendMessage(message)}
           chatId={chatId as string}
           chatName={chatName as string}
+          otherUsers={otherUsers}
         />
       </View>
     </RootContainer>

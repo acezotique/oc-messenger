@@ -13,6 +13,7 @@ type UserChatBubbleProps = {
 };
 
 const UserChatBubble = ({ chat }: UserChatBubbleProps) => {
+  const color = useThemeColor();
   const timestamp = useMemo(() => {
     const datetime = moment(chat.createdAt);
     if (moment().diff(datetime, "days") > 0) {
@@ -34,18 +35,14 @@ const UserChatBubble = ({ chat }: UserChatBubbleProps) => {
           style={{
             padding: 8,
             borderRadius: 8,
-            backgroundColor: useThemeColor("userMessageBubble"),
-            gap: 4
+            backgroundColor: color["userMessageBubble"],
+            gap: 4,
           }}
         >
           <Label label={chat.message} weight="normal" size="sm" />
-          <Label
-            label={timestamp}
-            weight="normal"
-            size="xxsm"
-          />
+          <Label label={timestamp} weight="normal" size="xxsm" />
         </Pressable>
-        <Pressable onLongPress={() =>console.log(chat.avatar)}>
+        <Pressable onLongPress={() => console.log(chat.avatar)}>
           <Avatar size="md" source={chat.avatar as string} />
         </Pressable>
       </Row>

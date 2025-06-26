@@ -14,6 +14,7 @@ type OthersChatBubbleProps = {
 
 const OthersChatBubble = ({ chat }: OthersChatBubbleProps) => {
   const router = useRouter();
+  const color = useThemeColor();
   const timestamp = useMemo(() => {
     const datetime = moment(chat.createdAt);
     if (moment().diff(datetime, "days") > 0) {
@@ -45,7 +46,7 @@ const OthersChatBubble = ({ chat }: OthersChatBubbleProps) => {
           style={{
             padding: 8,
             borderRadius: 8,
-            backgroundColor: useThemeColor("otherMessageBubble"),
+            backgroundColor: color["otherMessageBubble"],
             gap: 4,
           }}
         >

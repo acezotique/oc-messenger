@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           }
           setToken(token);
           setUser(user.uid);
+          console.log("Signed in");
           return true;
         },
         signOut: () => {

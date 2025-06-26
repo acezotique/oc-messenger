@@ -17,7 +17,7 @@ import ReanimatedSwipeable, {
 } from "react-native-gesture-handler/ReanimatedSwipeable";
 import { SharedValue } from "react-native-reanimated";
 import RightSwipeActions from "./RightSwipeActions";
-import { usePinChat } from "@/api-actions/chat";
+import { useDeleteChat, usePinChat } from "@/api-actions/chat";
 
 type ChatCardProps = {
   chatData: ChatType;
@@ -31,6 +31,7 @@ const ChatCard = ({
     name,
     avatar,
     lastMessage,
+    members,
     users,
     pinned,
     unread,
@@ -40,6 +41,7 @@ const ChatCard = ({
 }: ChatCardProps) => {
   const { uid } = useUserSession();
   const { mutate: pinChat } = usePinChat();
+  const { mutate: deleteChat } = useDeleteChat();
   const containerStyle = useContainerStyle({ justify: "space-between" });
   const { pressedBackground } = useThemeColor() as ColorType;
 
@@ -59,7 +61,15 @@ const ChatCard = ({
             pinChat({ uid: uid!, chatId: id, pinned: pinned });
             method.close();
           }}
-          onDelete={() => {}}
+          onDelete={() => {
+            deleteChat({
+              uid: uid!,
+              chatId: id,
+              members: members,
+              users: users,
+            });
+            method.close();
+          }}
         />
       )}
     >
