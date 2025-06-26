@@ -14,6 +14,7 @@ type InputProps = {
   onChange: (e: { nativeEvent: { text: string } }) => void;
   onBlur?: () => void;
   placeholder?: string;
+  multiline?: boolean;
   size?: "small" | "medium" | "large";
   error?: string;
   style?: StyleProp<TextStyle>;
@@ -25,7 +26,9 @@ function renderInput({
   type,
   value,
   onChange,
+  onBlur,
   placeholder,
+  multiline,
   error,
   style,
 }: InputProps) {
@@ -61,6 +64,8 @@ function renderInput({
         keyboardType={type === "email" ? "email-address" : "default"}
         value={value?.toString()}
         onChange={onChange}
+        onBlur={onBlur}
+        multiline={multiline}
         style={{
           borderWidth: 2,
           borderRadius: 4,

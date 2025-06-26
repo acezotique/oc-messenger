@@ -7,7 +7,9 @@ type LabelProps = {
   label?: string;
   weight?: "normal" | "bold";
   color?: ColorKeys;
-  size?: "xsm" | "sm" | "md" | "lg";
+  size?: "xxsm" | "xsm" | "sm" | "md" | "lg";
+  truncate?: boolean;
+  numberOfLines?: number;
 };
 
 const Label = ({
@@ -15,6 +17,8 @@ const Label = ({
   weight = "normal",
   color = "primaryText",
   size = "md",
+  truncate = false,
+  numberOfLines,
 }: LabelProps) => {
   const fontFamily =
     weight === "normal" ? "Roboto_400Regular" : "Roboto_700Bold";
@@ -29,6 +33,8 @@ const Label = ({
         return 32;
       case "xsm":
         return 12;
+      case "xxsm":
+        return 10;
       default:
         return 16;
     }
@@ -41,6 +47,8 @@ const Label = ({
         fontFamily: fontFamily,
         fontSize: fontSize,
       }}
+      numberOfLines={truncate ? numberOfLines : undefined}
+      ellipsizeMode={truncate ? "tail" : undefined}
     >
       {label}
     </Text>

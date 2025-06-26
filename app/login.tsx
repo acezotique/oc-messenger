@@ -1,5 +1,5 @@
 import { Image } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import RootContainer from "@/libs/components/layout/RootContainer";
 import Column from "@/libs/components/layout/Column";
 import Input from "@/libs/components/elements/Input";
@@ -9,7 +9,8 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "@/libs/components/forms/FormField";
-import { onUserLogin } from "@/api-actions/auth/auth";
+import { useUserSession } from "@/libs/providers/AuthProvider";
+import { useRouter } from "expo-router";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -19,13 +20,19 @@ const LoginSchema = z.object({
 type LoginFormType = z.infer<typeof LoginSchema>;
 
 const LoginScreen = () => {
+  const router = useRouter();
+  const { signIn, isLoading } = useUserSession();
   const { control, handleSubmit } = useForm<LoginFormType>({
     resolver: zodResolver(LoginSchema),
   });
 
   const onLogin: SubmitHandler<LoginFormType> = async (payload) => {
-    const user = await onUserLogin(payload);
-    console.log(user);
+    const result = await signIn(payload.email, payload.password);
+    if (result) {
+      router.replace("/");
+    } else {
+      console.error("Login failed");
+    }
   };
 
   return (
@@ -77,7 +84,11 @@ const LoginScreen = () => {
               />
             )}
           />
-          <Button label="Login" onPress={handleSubmit(onLogin)} />
+          <Button
+            label="Login"
+            onPress={handleSubmit(onLogin)}
+            loading={isLoading}
+          />
           <Button label="Forgot Password" variant="link" />
         </Column>
       </Column>

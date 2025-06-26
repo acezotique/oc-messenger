@@ -1,14 +1,15 @@
 import {
   StyleProp,
   ViewStyle,
-  Pressable,
   FlexAlignType,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import React, { useMemo } from "react";
 import useThemeColor from "@/libs/hooks/theme";
 import Label from "./Label";
-import Colors from "@/constants/Colors";
+import { Pressable } from "react-native-gesture-handler";
+import { ColorKeys } from "@/constants/Colors";
 
 type ButtonProps = {
   onPress?: () => void;
@@ -20,7 +21,11 @@ type ButtonProps = {
   style?:
     | StyleProp<ViewStyle>
     | ((e: { pressed?: boolean }) => StyleProp<ViewStyle>);
-  variant?: "link";
+  variant?: "link" | "round";
+  transparent?: boolean;
+  loading?: boolean;
+  labelColor?: ColorKeys
+  backgroundColor?: ColorKeys
 };
 
 const Button = ({
@@ -32,18 +37,29 @@ const Button = ({
   disabled,
   style,
   variant,
+  transparent = false,
+  loading = false,
+  labelColor = "white",
+  backgroundColor = "primaryAccentColor",
 }: ButtonProps) => {
-  const buttonColor = useThemeColor("primaryAccentColor");
+  const buttonColor = useThemeColor(backgroundColor);
+  const buttonPressedColor = useThemeColor("pressedBackground");
   const buttonStyle = useMemo(() => {
     if (typeof style === "function") {
       return style;
     } else {
       return ({ pressed }: { pressed: boolean }) => ({
-        backgroundColor: pressed ? Colors.light.secondaryText : buttonColor,
+        backgroundColor: pressed
+          ? buttonPressedColor
+          : transparent
+          ? undefined
+          : buttonColor,
         padding: 10,
-        marginVertical: 10,
         alignItems: "center" as FlexAlignType,
-        borderRadius: 4,
+        justifyContent: "center",
+        gap: 8,
+        borderRadius: variant === "round" ? 50 : 4,
+        flexDirection: 'row',
         ...(style as object),
       });
     }
@@ -52,8 +68,10 @@ const Button = ({
   const buttonLabel = useMemo(() => {
     if (typeof label === "string") {
       return (
-        <Label label={label} color="primaryText" weight="bold" size="sm" />
+        <Label label={label} color={labelColor} weight="bold" size="sm" />
       );
+    } else {
+      return label;
     }
   }, [label]);
 
@@ -86,6 +104,7 @@ const Button = ({
       style={buttonStyle}
     >
       {buttonLabel}
+      {loading && <ActivityIndicator />}
     </Pressable>
   );
 };

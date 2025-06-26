@@ -3,46 +3,65 @@ import {
   Platform,
   StyleProp,
   View as DefaultView,
-  TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
 import React, { PropsWithChildren, useMemo } from "react";
-import Colors from "@/constants/Colors";
+import { ColorKeys } from "@/constants/Colors";
 import useThemeColor from "@/libs/hooks/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  GestureHandlerRootView,
+  Pressable,
+} from "react-native-gesture-handler";
 
 export type RootContainerProps = {
-  backgroundColor?: keyof typeof Colors.light | keyof typeof Colors.dark;
-  align?: "center" | "start" | "end";
-  justify?: "center" | "start" | "end" | "space-between" | "space-around";
+  backgroundColor?: ColorKeys;
+  align?: "center" | "flex-start" | "flex-end";
+  justify?:
+    | "center"
+    | "flex-start"
+    | "flex-end"
+    | "space-between"
+    | "space-around";
   centered?: boolean;
+  disableBottomSafeArea?: boolean;
 };
 
 const RootContainer = ({
   children,
+  disableBottomSafeArea = false,
   ...rest
 }: PropsWithChildren<RootContainerProps>) => {
   const containerStyle = useContainerStyle(rest);
 
   return (
-    <KeyboardAvoidingView
+    <GestureHandlerRootView
       style={[containerStyle, { flex: 1 }]}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={{ flex: 1 }}>{children}</SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        style={[containerStyle, { flex: 1 }]}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
+          <SafeAreaView
+            style={{ flex: 1 }}
+            edges={disableBottomSafeArea ? ["top"] : undefined}
+          >
+            {children}
+          </SafeAreaView>
+        </Pressable>
+      </KeyboardAvoidingView>
+    </GestureHandlerRootView>
   );
 };
 
 export function useContainerStyle({
-  backgroundColor = "background",
-  align = "start",
-  justify = "start",
+  backgroundColor = "transparent",
+  align,
+  justify,
   centered,
 }: RootContainerProps): StyleProp<DefaultView["props"]> {
-  const themeColor = useThemeColor(backgroundColor) ?? undefined;
+  const themeColor = useThemeColor(backgroundColor);
   const containerAlign = centered ? "center" : align;
   const containerJustify = centered ? "center" : justify;
   return {

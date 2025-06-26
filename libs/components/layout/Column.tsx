@@ -1,4 +1,4 @@
-import { DimensionValue, StyleProp, View } from "react-native";
+import { DimensionValue, StyleProp, View, ViewStyle } from "react-native";
 import React, { PropsWithChildren, useMemo } from "react";
 import { RootContainerProps, useContainerStyle } from "./RootContainer";
 
@@ -10,7 +10,7 @@ type ColumnProps = RootContainerProps & {
   marginOrientation?: "horizontal" | "vertical";
   padding?: DimensionValue;
   paddingOrientation?: "horizontal" | "vertical";
-  style?: StyleProp<View["props"]>;
+  style?: StyleProp<ViewStyle>;
   gap?: 2 | 4 | 6 | 8 | 10 | 15 | 20 | 25 | 30;
 };
 
@@ -45,7 +45,7 @@ const Column = ({
       },
       containerStyle,
       style,
-    ] as StyleProp<View["props"]>;
+    ] as StyleProp<ViewStyle>;
   }, [
     width,
     height,
