@@ -35,9 +35,7 @@ const RootContainer = ({
   const containerStyle = useContainerStyle(rest);
 
   return (
-    <GestureHandlerRootView
-      style={[containerStyle, { flex: 1 }]}
-    >
+    <GestureHandlerRootView style={[containerStyle, { flex: 1 }]}>
       <KeyboardAvoidingView
         style={[containerStyle, { flex: 1 }]}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -61,7 +59,8 @@ export function useContainerStyle({
   justify,
   centered,
 }: RootContainerProps): StyleProp<DefaultView["props"]> {
-  const themeColor = useThemeColor(backgroundColor);
+  const color = useThemeColor();
+  const themeColor = color[backgroundColor];
   const containerAlign = centered ? "center" : align;
   const containerJustify = centered ? "center" : justify;
   return {

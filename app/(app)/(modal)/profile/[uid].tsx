@@ -16,8 +16,7 @@ const ProfileScreen = () => {
   const { uid } = useLocalSearchParams();
   const { data: user } = useGetUserDataByUid(uid as string);
   const router = useRouter();
-  const borderColor = useThemeColor("primaryAccentColor");
-  const pressedBackgroundColor = useThemeColor("pressedBackground");
+  const color = useThemeColor();
 
   return (
     <RootContainer backgroundColor="background">
@@ -43,10 +42,10 @@ const ProfileScreen = () => {
         </Row>
         <Switch
           trackColor={{
-            true: borderColor,
-            false: pressedBackgroundColor,
+            true: color["primaryAccentColor"],
+            false: color["pressedBackground"],
           }}
-          thumbColor={useThemeColor("white")}
+          thumbColor={color["white"]}
           value={dnb}
           onValueChange={setDnb}
         />

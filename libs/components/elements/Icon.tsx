@@ -34,12 +34,13 @@ const IconName = {
 
 export type IconNameKeys = keyof typeof IconName;
 
-const Icon = ({ name, size, color }: IconProps) => {
+const Icon = ({ name, size, color: iconColor }: IconProps) => {
+  const color = useThemeColor();
   return (
     <Ionicons
       name={name}
       size={size}
-      color={useThemeColor(color ?? "searchBarBackground")}
+      color={color[iconColor ?? "searchBarBackground"]}
     />
   );
 };

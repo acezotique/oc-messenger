@@ -14,6 +14,7 @@ type SearchBarProps = {
 
 const SearchBar = ({ onChange, placeholder, showButton }: SearchBarProps) => {
   const [value, setValue] = useState("");
+  const color = useThemeColor();
 
   const debouncedSearch = useMemo(
     () =>
@@ -51,12 +52,12 @@ const SearchBar = ({ onChange, placeholder, showButton }: SearchBarProps) => {
             : handleOnChange(e.nativeEvent.text)
         }
         placeholder={placeholder}
-        placeholderTextColor={useThemeColor("primaryText")}
+        placeholderTextColor={color["primaryText"]}
         style={{
           flex: 1,
           padding: 8,
           fontSize: 16,
-          color: useThemeColor("primaryText"),
+          color: color["primaryText"],
         }}
       />
       {showButton && (

@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import React, { useMemo } from "react";
 import Icon from "../elements/Icon";
 import useThemeColor from "@/libs/hooks/theme";
@@ -9,7 +9,8 @@ type AvatarProps = {
 };
 
 const Avatar = ({ source, size }: AvatarProps) => {
-  const bgColor = useThemeColor("primaryAccentColor");
+  const color = useThemeColor();
+  const bgColor = color["primaryAccentColor"];
   const dimension = useMemo(() => {
     switch (size) {
       case "sm":

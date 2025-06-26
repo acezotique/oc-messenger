@@ -139,3 +139,19 @@ export const useCreateChat = () => {
     onError: (error) => console.error(error),
   });
 };
+
+export const usePinChat = () => {
+  return useMutation({
+    mutationFn: async (payload: {
+      uid: string;
+      chatId: string;
+      pinned: string[];
+    }) => {
+      return await updateDoc(doc(db, "chat", payload.chatId), {
+        pinned: payload.pinned.includes(payload.uid)
+          ? payload.pinned.filter((uid) => uid !== payload.uid)
+          : [...payload.pinned, payload.uid],
+      });
+    },
+  });
+};

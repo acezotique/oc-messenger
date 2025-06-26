@@ -1,4 +1,4 @@
-type ColorType = {
+export type ColorType = {
   background: string;
   primaryText: string;
   secondaryText: string;

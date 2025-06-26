@@ -15,11 +15,12 @@ type LabelProps = {
 const Label = ({
   label,
   weight = "normal",
-  color = "primaryText",
+  color: textColor = "primaryText",
   size = "md",
   truncate = false,
   numberOfLines,
 }: LabelProps) => {
+  const color = useThemeColor();
   const fontFamily =
     weight === "normal" ? "Roboto_400Regular" : "Roboto_700Bold";
 
@@ -43,7 +44,7 @@ const Label = ({
   return (
     <Text
       style={{
-        color: useThemeColor(color),
+        color: color[textColor],
         fontFamily: fontFamily,
         fontSize: fontSize,
       }}

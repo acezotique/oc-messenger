@@ -32,11 +32,13 @@ function renderInput({
   error,
   style,
 }: InputProps) {
+  const color = useThemeColor("light");
+
   if (type === "number") {
     return (
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor={useThemeColor("primaryText", "light")}
+        placeholderTextColor={color["primaryText"]}
         keyboardType="numeric"
         value={value?.toString()}
         onChange={onChange}
@@ -44,11 +46,9 @@ function renderInput({
           {
             borderWidth: 2,
             borderRadius: 4,
-            borderColor: error
-              ? useThemeColor("error")
-              : useThemeColor("primaryAccentColor", "light"),
-            backgroundColor: useThemeColor("background", "light"),
-            color: useThemeColor("primaryText", "light"),
+            borderColor: error ? color["error"] : color["primaryAccentColor"],
+            backgroundColor: color["background"],
+            color: color["primaryText"],
             padding: 8,
           },
           style,
@@ -59,7 +59,7 @@ function renderInput({
     return (
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor={useThemeColor("primaryText", "light")}
+        placeholderTextColor={color["primaryText"]}
         secureTextEntry={type === "password"}
         keyboardType={type === "email" ? "email-address" : "default"}
         value={value?.toString()}
@@ -69,11 +69,9 @@ function renderInput({
         style={{
           borderWidth: 2,
           borderRadius: 4,
-          borderColor: error
-            ? useThemeColor("error")
-            : useThemeColor("primaryAccentColor", "light"),
-          backgroundColor: useThemeColor("background", "light"),
-          color: useThemeColor("primaryText", "light"),
+          borderColor: error ? color["error"] : color["primaryAccentColor"],
+          backgroundColor: color["background"],
+          color: color["primaryText"],
           padding: 8,
         }}
       />

@@ -37,8 +37,7 @@ const Dropdown = <T extends object>({
     setDropdownVisible(false);
   };
 
-  const backgroundColor = useThemeColor("searchBarBackground");
-  const borderColor = useThemeColor("primaryAccentColor");
+  const color = useThemeColor();
 
   return (
     <View>
@@ -46,12 +45,10 @@ const Dropdown = <T extends object>({
         style={({ pressed }) => ({
           padding: 8,
           backgroundColor: pressed
-            ? useThemeColor("pressedBackground")
-            : useThemeColor("searchBarBackground"),
+            ? color["pressedBackground"]
+            : color["searchBarBackground"],
           borderRadius: 8,
-          borderColor: error
-            ? useThemeColor("error")
-            : useThemeColor("primaryAccentColor"),
+          borderColor: error ? color["error"] : color["primaryAccentColor"],
           borderWidth: 2,
           alignItems: "center",
         })}
@@ -72,7 +69,7 @@ const Dropdown = <T extends object>({
               style={({ pressed }) => ({
                 padding: 8,
                 backgroundColor: pressed ? "#fff" : undefined,
-                borderColor: borderColor,
+                borderColor: color["primaryAccentColor"],
                 borderRadius: 5,
                 elevation: 3,
                 shadowColor: "#000000",
@@ -91,9 +88,9 @@ const Dropdown = <T extends object>({
           )}
           style={{
             marginTop: 8,
-            backgroundColor: backgroundColor,
+            backgroundColor: color["searchBarBackground"],
             borderRadius: 8,
-            borderColor: borderColor,
+            borderColor: color["primaryAccentColor"],
             borderWidth: 2,
             zIndex: 100,
           }}

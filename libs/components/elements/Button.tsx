@@ -24,8 +24,8 @@ type ButtonProps = {
   variant?: "link" | "round";
   transparent?: boolean;
   loading?: boolean;
-  labelColor?: ColorKeys
-  backgroundColor?: ColorKeys
+  labelColor?: ColorKeys;
+  backgroundColor?: ColorKeys;
 };
 
 const Button = ({
@@ -42,34 +42,32 @@ const Button = ({
   labelColor = "white",
   backgroundColor = "primaryAccentColor",
 }: ButtonProps) => {
-  const buttonColor = useThemeColor(backgroundColor);
-  const buttonPressedColor = useThemeColor("pressedBackground");
+  const color = useThemeColor();
+
   const buttonStyle = useMemo(() => {
     if (typeof style === "function") {
       return style;
     } else {
       return ({ pressed }: { pressed: boolean }) => ({
         backgroundColor: pressed
-          ? buttonPressedColor
+          ? color["pressedBackground"]
           : transparent
           ? undefined
-          : buttonColor,
+          : color[backgroundColor],
         padding: 10,
         alignItems: "center" as FlexAlignType,
         justifyContent: "center",
         gap: 8,
         borderRadius: variant === "round" ? 50 : 4,
-        flexDirection: 'row',
+        flexDirection: "row",
         ...(style as object),
       });
     }
-  }, [style, buttonColor]);
+  }, [style, backgroundColor]);
 
   const buttonLabel = useMemo(() => {
     if (typeof label === "string") {
-      return (
-        <Label label={label} color={labelColor} weight="bold" size="sm" />
-      );
+      return <Label label={label} color={labelColor} weight="bold" size="sm" />;
     } else {
       return label;
     }
@@ -79,7 +77,7 @@ const Button = ({
     return (
       <Text
         style={{
-          color: buttonColor,
+          color: color[backgroundColor],
           fontFamily: "Roboto_400Regular",
           fontSize: 16,
           textAlign: "center",

@@ -61,20 +61,19 @@ const CreateChatModal = () => {
   const { mutate: createChat } = useCreateChat();
   const [members, setMembers] = useState<User[]>([]);
   const [keyword, setKeyword] = useState<string>("");
-  const borderColor = useThemeColor("primaryAccentColor");
-  const pressedBackgroundColor = useThemeColor("pressedBackground");
+  const color = useThemeColor();
+  // const borderColor = useThemeColor("primaryAccentColor");
+  // const pressedBackgroundColor = useThemeColor("pressedBackground");
 
-  const { control, handleSubmit, watch } = useForm<ChatCreationFormType>(
-    {
-      resolver: zodResolver(ChatCreationSchema),
-      defaultValues: {
-        avatar: "",
-        name: "",
-        members: [{ uid: currentUid! }],
-        isGroup: false,
-      },
-    }
-  );
+  const { control, handleSubmit, watch } = useForm<ChatCreationFormType>({
+    resolver: zodResolver(ChatCreationSchema),
+    defaultValues: {
+      avatar: "",
+      name: "",
+      members: [{ uid: currentUid! }],
+      isGroup: false,
+    },
+  });
 
   const [selectedMembers, isGroup] = watch(["members", "isGroup"]);
 
@@ -197,7 +196,7 @@ const CreateChatModal = () => {
                           borderColor: selectedMembers.some(
                             (member) => member.uid === item.item.uid
                           )
-                            ? borderColor
+                            ? color["primaryAccentColor"]
                             : undefined,
                         }}
                       >
@@ -228,10 +227,10 @@ const CreateChatModal = () => {
                 <Label label="Create Group: " size="sm" />
                 <Switch
                   trackColor={{
-                    true: borderColor,
-                    false: pressedBackgroundColor,
+                    true: color["primaryAccentColor"],
+                    false: color["pressedBackground"],
                   }}
-                  thumbColor={useThemeColor("white")}
+                  thumbColor={color["white"]}
                   value={value}
                   onValueChange={(e) => {
                     onChange(e);
