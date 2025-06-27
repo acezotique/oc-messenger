@@ -50,9 +50,16 @@ const ChatList = ({ keyword }: ChatListProps) => {
       retrieveChatData();
     }
 
-    const filteredData = chatData.filter((item) =>
-      item.name.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredData = chatData.filter((item) => {
+      if (item.isGroup) {
+        return item.name.toLowerCase().includes(query.toLowerCase());
+      } else {
+        return item.users
+          .find((user) => user.uid !== uid)
+          ?.name.toLowerCase()
+          .includes(query.toLowerCase());
+      }
+    });
     setChatData(filteredData);
   };
 
